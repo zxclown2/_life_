@@ -166,18 +166,31 @@ namespace _life_
          resolution=orig_resolution*zoom;
          field.Image = null;
          field.Image = new Bitmap(field.Width, field.Height);
-            g = Graphics.FromImage(field.Image);
-            drawmap();
+         g = Graphics.FromImage(field.Image);
+        drawmap();
            
         }
         private void zoom_slider_Scroll(object sender, EventArgs e)
-        {
+        { if (!gameison) return;
             if (zoom_slider.Value != 0)
             {
                 zoom = zoom_slider.Value;
                 textBox1.Text = zoom_slider.Value.ToString();
                  PictureBoxZoom(orig_image, zoom);
             }
+        }
+
+        private void generate_Click(object sender, EventArgs e)
+        {  if (!gameison) return;
+            var rnd= new Random();
+            for(int i=0;i<cols;i++)
+            {
+                for(int j=0;j<rows;j++)
+                {
+                    map[i, j] = rnd.Next((int)Density.Value) == 0;
+                }
+            }
+            drawmap();
         }
     }
 }

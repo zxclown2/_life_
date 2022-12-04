@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label3 = new System.Windows.Forms.Label();
+            this.generate = new System.Windows.Forms.Button();
             this.zoom_slider = new System.Windows.Forms.TrackBar();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tim_stop = new System.Windows.Forms.Button();
@@ -63,6 +65,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.label3);
+            this.splitContainer1.Panel1.Controls.Add(this.generate);
             this.splitContainer1.Panel1.Controls.Add(this.zoom_slider);
             this.splitContainer1.Panel1.Controls.Add(this.textBox1);
             this.splitContainer1.Panel1.Controls.Add(this.tim_stop);
@@ -82,10 +86,29 @@
             this.splitContainer1.SplitterDistance = 183;
             this.splitContainer1.TabIndex = 0;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(32, 311);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 16);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "zoom";
+            // 
+            // generate
+            // 
+            this.generate.Location = new System.Drawing.Point(25, 366);
+            this.generate.Name = "generate";
+            this.generate.Size = new System.Drawing.Size(142, 23);
+            this.generate.TabIndex = 10;
+            this.generate.Text = "generate";
+            this.generate.UseVisualStyleBackColor = true;
+            this.generate.Click += new System.EventHandler(this.generate_Click);
+            // 
             // zoom_slider
             // 
             this.zoom_slider.LargeChange = 1;
-            this.zoom_slider.Location = new System.Drawing.Point(32, 318);
+            this.zoom_slider.Location = new System.Drawing.Point(28, 333);
             this.zoom_slider.Maximum = 5;
             this.zoom_slider.Minimum = 1;
             this.zoom_slider.Name = "zoom_slider";
@@ -253,6 +276,8 @@
         private System.Windows.Forms.Button tim_start;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TrackBar zoom_slider;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button generate;
     }
 }
 
