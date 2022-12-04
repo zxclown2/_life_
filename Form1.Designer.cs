@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.zoom_slider = new System.Windows.Forms.TrackBar();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tim_stop = new System.Windows.Forms.Button();
             this.tim_start = new System.Windows.Forms.Button();
@@ -45,6 +46,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.zoom_slider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Density)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Resolution)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.field)).BeginInit();
@@ -61,6 +63,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.zoom_slider);
             this.splitContainer1.Panel1.Controls.Add(this.textBox1);
             this.splitContainer1.Panel1.Controls.Add(this.tim_stop);
             this.splitContainer1.Panel1.Controls.Add(this.tim_start);
@@ -78,6 +81,18 @@
             this.splitContainer1.Size = new System.Drawing.Size(931, 589);
             this.splitContainer1.SplitterDistance = 183;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // zoom_slider
+            // 
+            this.zoom_slider.LargeChange = 1;
+            this.zoom_slider.Location = new System.Drawing.Point(32, 318);
+            this.zoom_slider.Maximum = 5;
+            this.zoom_slider.Minimum = 1;
+            this.zoom_slider.Name = "zoom_slider";
+            this.zoom_slider.Size = new System.Drawing.Size(104, 56);
+            this.zoom_slider.TabIndex = 9;
+            this.zoom_slider.Value = 1;
+            this.zoom_slider.Scroll += new System.EventHandler(this.zoom_slider_Scroll);
             // 
             // textBox1
             // 
@@ -187,9 +202,11 @@
             // 
             // field
             // 
+            this.field.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.field.Location = new System.Drawing.Point(0, 0);
             this.field.Name = "field";
             this.field.Size = new System.Drawing.Size(1500, 1500);
+            this.field.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.field.TabIndex = 0;
             this.field.TabStop = false;
             this.field.MouseClick += new System.Windows.Forms.MouseEventHandler(this.field_MouseClick);
@@ -213,6 +230,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.zoom_slider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Density)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Resolution)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.field)).EndInit();
@@ -234,6 +252,7 @@
         private System.Windows.Forms.Button tim_stop;
         private System.Windows.Forms.Button tim_start;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TrackBar zoom_slider;
     }
 }
 

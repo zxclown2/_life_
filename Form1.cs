@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
@@ -18,13 +19,18 @@ namespace _life_
         private int rows; //y
         private int cols; //x
         private bool gameison;
+        private int zoom;
+        private int orig_width;
+        private int orig_height;
+        private int orig_resolution;
+        private Image orig_image;
         public Form1()
         {
-            this.Height = 1024;
-            this.Width = 1024;
+           
             InitializeComponent();
             
         }
+      
         public void createmap() 
         {   if (timer1.Enabled)
                 return;
@@ -35,6 +41,10 @@ namespace _life_
             cols = field.Width / resolution;
             map = new bool[cols, rows];
             field.Image = new Bitmap(field.Width, field.Height);
+            orig_image=field.Image;
+            orig_height = field.Height;
+            orig_width = field.Width;
+            orig_resolution = resolution;
             g = Graphics.FromImage(field.Image);
             gameison = true;
         }
@@ -98,6 +108,7 @@ namespace _life_
         {
             nextmove();
         }
+
       
 
         private void startbut_Click(object sender, EventArgs e)
@@ -145,7 +156,28 @@ namespace _life_
             map[x, y] = !map[x, y];
             drawmap();
         }
-
-      
+        public void PictureBoxZoom(Image img, int zoom)
+        {
+            //    cols=cols*Size.Width;
+            //  rows=rows*Size.Height;
+            
+         field.Height=orig_height*zoom;
+         field.Width = orig_width*zoom;
+         resolution=orig_resolution*zoom;
+         field.Image = null;
+         field.Image = new Bitmap(field.Width, field.Height);
+            g = Graphics.FromImage(field.Image);
+            drawmap();
+           
+        }
+        private void zoom_slider_Scroll(object sender, EventArgs e)
+        {
+            if (zoom_slider.Value != 0)
+            {
+                zoom = zoom_slider.Value;
+                textBox1.Text = zoom_slider.Value.ToString();
+                 PictureBoxZoom(orig_image, zoom);
+            }
+        }
     }
 }
