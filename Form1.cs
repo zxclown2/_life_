@@ -20,6 +20,8 @@ namespace _life_
         private bool gameison;
         public Form1()
         {
+            this.Height = 1024;
+            this.Width = 1024;
             InitializeComponent();
             
         }
@@ -117,9 +119,7 @@ namespace _life_
             Density.Enabled = true;
         }
 
-        private void field_MouseMove(object sender, MouseEventArgs e)
-        {
-        }
+     
 
         private void tim_start_Click(object sender, EventArgs e)
         {
@@ -145,5 +145,7 @@ namespace _life_
             map[x, y] = !map[x, y];
             drawmap();
         }
+
+      
     }
 }
