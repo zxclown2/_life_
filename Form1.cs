@@ -28,6 +28,7 @@ namespace _life_
         {
            
             InitializeComponent();
+            Resolution.Value = Properties.Settings.Default.Resolutionset;
             
         }
       
@@ -37,8 +38,10 @@ namespace _life_
             Resolution.Enabled = false;
             Density.Enabled = false;
             resolution = (int)Resolution.Value;
+            Resolution.Value = resolution;
             rows = field.Height / resolution;
             cols = field.Width / resolution;
+            Properties.Settings.Default.Resolutionset=resolution;
             map = new bool[cols, rows];
             field.Image = new Bitmap(field.Width, field.Height);
             orig_image=field.Image;
@@ -191,6 +194,14 @@ namespace _life_
                 }
             }
             drawmap();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            
+                Properties.Settings.Default.Save();
+
+            
         }
     }
 }
