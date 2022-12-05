@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
@@ -255,7 +256,7 @@ namespace _life_
             }
             drawmap();
         }
-
+       
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             
@@ -263,5 +264,68 @@ namespace _life_
 
             
         }
+
+        private void save_Click(object sender, EventArgs e)
+        {
+
+            Stream myStream;
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = "bmp files (*.bmp)|*.bmp";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
+            string filePath = "";
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDialog1.OpenFile()) != null)
+                {
+                    // Code to write the stream goes here.
+                    filePath = saveFileDialog1.FileName;
+                    myStream.Close();
+                }
+            }
+            if (filePath == String.Empty)
+                return;
+            Bitmap bmp = new Bitmap(field.Image);
+            bmp.Save(filePath,System.Drawing.Imaging.ImageFormat.Bmp);
+        }
+
+        private void load_Click(object sender, EventArgs e)
+        { if (gameison) return;
+            
+                string filePath = "";
+                OpenFileDialog ofd = new OpenFileDialog();
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = ofd.FileName;
+                }
+                if (filePath == String.Empty)
+                    return;
+               Bitmap bitmap = new Bitmap(filePath);
+               map=new bool[bitmap.Width,bitmap.Height];
+                resolution = (int)Resolution.Value;
+               cols = bitmap.Width/resolution;
+               rows=bitmap.Height/resolution;
+               resolution=field.Width/cols;
+               Resolution.Value = resolution;
+            textBox1.Text = $"{cols} {rows}";
+           // field.Image = bitmap;
+            for (int i=0; i < bitmap.Width; i++)
+              {
+                for(int j=0;j<bitmap.Height;j++)
+                {
+                  
+                    map[i, j] = false;
+                    if (bitmap.GetPixel(i * resolution, j * resolution).Name.Equals("ff000000")) 
+                        map[i, j] = true;
+                }
+              }
+           
+
+                drawmap();
+
+         }
+        
     }
 }

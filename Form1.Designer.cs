@@ -51,6 +51,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.field = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.save = new System.Windows.Forms.Button();
+            this.load = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -99,6 +101,8 @@
             // 
             // Game
             // 
+            this.Game.Controls.Add(this.load);
+            this.Game.Controls.Add(this.save);
             this.Game.Controls.Add(this.label3);
             this.Game.Controls.Add(this.textBox1);
             this.Game.Controls.Add(this.generate);
@@ -119,7 +123,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 240);
+            this.label3.Location = new System.Drawing.Point(-1, 314);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 19);
             this.label3.TabIndex = 11;
@@ -127,14 +131,14 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 338);
+            this.textBox1.Location = new System.Drawing.Point(-4, 398);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 27);
             this.textBox1.TabIndex = 8;
             // 
             // generate
             // 
-            this.generate.Location = new System.Drawing.Point(3, 206);
+            this.generate.Location = new System.Drawing.Point(-1, 206);
             this.generate.Name = "generate";
             this.generate.Size = new System.Drawing.Size(135, 31);
             this.generate.TabIndex = 10;
@@ -146,7 +150,7 @@
             // 
             this.zoom_slider.Enabled = false;
             this.zoom_slider.LargeChange = 1;
-            this.zoom_slider.Location = new System.Drawing.Point(9, 267);
+            this.zoom_slider.Location = new System.Drawing.Point(-4, 336);
             this.zoom_slider.Maximum = 5;
             this.zoom_slider.Minimum = 1;
             this.zoom_slider.Name = "zoom_slider";
@@ -157,7 +161,7 @@
             // 
             // startbut
             // 
-            this.startbut.Location = new System.Drawing.Point(3, 58);
+            this.startbut.Location = new System.Drawing.Point(-1, 58);
             this.startbut.Name = "startbut";
             this.startbut.Size = new System.Drawing.Size(135, 31);
             this.startbut.TabIndex = 4;
@@ -167,7 +171,7 @@
             // 
             // stopbut
             // 
-            this.stopbut.Location = new System.Drawing.Point(3, 95);
+            this.stopbut.Location = new System.Drawing.Point(-1, 95);
             this.stopbut.Name = "stopbut";
             this.stopbut.Size = new System.Drawing.Size(135, 31);
             this.stopbut.TabIndex = 5;
@@ -177,7 +181,7 @@
             // 
             // tim_start
             // 
-            this.tim_start.Location = new System.Drawing.Point(3, 132);
+            this.tim_start.Location = new System.Drawing.Point(-1, 132);
             this.tim_start.Name = "tim_start";
             this.tim_start.Size = new System.Drawing.Size(135, 31);
             this.tim_start.TabIndex = 6;
@@ -187,7 +191,7 @@
             // 
             // tim_stop
             // 
-            this.tim_stop.Location = new System.Drawing.Point(3, 169);
+            this.tim_stop.Location = new System.Drawing.Point(-1, 169);
             this.tim_stop.Name = "tim_stop";
             this.tim_stop.Size = new System.Drawing.Size(135, 31);
             this.tim_stop.TabIndex = 7;
@@ -347,6 +351,28 @@
             this.timer1.Interval = 50;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // save
+            // 
+            this.save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.save.Location = new System.Drawing.Point(-1, 243);
+            this.save.Name = "save";
+            this.save.Size = new System.Drawing.Size(135, 31);
+            this.save.TabIndex = 12;
+            this.save.Text = "save";
+            this.save.UseVisualStyleBackColor = true;
+            this.save.Click += new System.EventHandler(this.save_Click);
+            // 
+            // load
+            // 
+            this.load.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.load.Location = new System.Drawing.Point(-1, 280);
+            this.load.Name = "load";
+            this.load.Size = new System.Drawing.Size(135, 31);
+            this.load.TabIndex = 13;
+            this.load.Text = "load";
+            this.load.UseVisualStyleBackColor = true;
+            this.load.Click += new System.EventHandler(this.load_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -398,6 +424,8 @@
         private System.Windows.Forms.Label a;
         private System.Windows.Forms.ListBox to_alive;
         private System.Windows.Forms.ListBox to_stay;
+        private System.Windows.Forms.Button save;
+        private System.Windows.Forms.Button load;
     }
 }
 
