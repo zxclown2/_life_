@@ -31,7 +31,10 @@ namespace _life_
            
             InitializeComponent();
             Resolution.Value = Properties.Settings.Default.Resolutionset;
-            
+            setinfofromsettings(Properties.Settings.Default.Aliveset,to_alive);
+            setinfofromsettings(Properties.Settings.Default.Stayset,to_stay);
+
+
         }
         public List<int> getiinfo(ListBox listbox)
         {
@@ -47,6 +50,26 @@ namespace _life_
             }
             return ind;
         }
+        public void setinfofromsettings(string s,ListBox list)
+        {
+            List<int> ans = new List<int>();
+            string[] s0 = s.Split(' ');
+            foreach(var ch in s0 )
+            {
+                ans.Add(Int32.Parse(ch)); }
+            foreach (var ch in ans)
+                list.SetSelected(ch, true);
+
+        }
+        public string tostring(List<int> list)
+        {
+            string ans="";
+            foreach (var i in list)
+                ans += i.ToString()+" ";
+            ans = ans.Substring(0, ans.Length - 1);
+            return ans;
+
+        }
       
         public void createmap() 
         {   
@@ -60,6 +83,8 @@ namespace _life_
             tostay = getiinfo(to_stay);
             cols = field.Width / resolution;
             Properties.Settings.Default.Resolutionset=resolution;
+            Properties.Settings.Default.Aliveset = tostring(toalive);
+            Properties.Settings.Default.Stayset=tostring(tostay);
             map = new bool[cols, rows];
             field.Image = new Bitmap(field.Width, field.Height);
             orig_image=field.Image;
