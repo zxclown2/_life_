@@ -79,6 +79,11 @@ namespace _life_
             zoom_slider.Enabled = true;
             to_alive.Enabled = false;
             to_stay.Enabled = false;
+            save.Enabled = true;
+            load.Enabled = true;
+            generate.Enabled = true;
+            tim_start.Enabled = true;
+            tim_stop.Enabled = true;
             resolution = (int)Resolution.Value;
             Resolution.Value = resolution;
             rows = field.Height / resolution;
@@ -227,6 +232,11 @@ namespace _life_
             zoom_slider.Enabled = false;
             to_stay.Enabled = true;
             to_alive.Enabled = true;
+            load.Enabled = false ;
+            save.Enabled = false ;
+            generate.Enabled = false;
+            tim_start.Enabled = false;
+            tim_stop.Enabled = false;
             zoom_slider.Value = 1;
             field.Height = orig_height ;
             field.Width = orig_width ;
@@ -246,6 +256,7 @@ namespace _life_
 
         private void generate_Click(object sender, EventArgs e)
         {  if (!gameison) return;
+           
             var rnd= new Random();
             for(int i=0;i<cols;i++)
             {
@@ -292,9 +303,10 @@ namespace _life_
         }
 
         private void load_Click(object sender, EventArgs e)
-        { if (gameison) return;
-            
-                string filePath = "";
+        { 
+          //  if (g == null) return;
+
+            string filePath = "";
                 OpenFileDialog ofd = new OpenFileDialog();
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
@@ -303,20 +315,21 @@ namespace _life_
                 if (filePath == String.Empty)
                     return;
                Bitmap bitmap = new Bitmap(filePath);
-               map=new bool[bitmap.Width,bitmap.Height];
+             
                 resolution = (int)Resolution.Value;
                cols = bitmap.Width/resolution;
                rows=bitmap.Height/resolution;
-               resolution=field.Width/cols;
-               Resolution.Value = resolution;
+               map = new bool[cols, rows];
+           
             textBox1.Text = $"{cols} {rows}";
            // field.Image = bitmap;
-            for (int i=0; i < bitmap.Width; i++)
+            for (int i=0; i < cols; i++)
               {
-                for(int j=0;j<bitmap.Height;j++)
+                for(int j=0;j<rows;j++)
                 {
-                  
+                 
                     map[i, j] = false;
+
                     if (bitmap.GetPixel(i * resolution, j * resolution).Name.Equals("ff000000")) 
                         map[i, j] = true;
                 }
