@@ -8,5 +8,11 @@
     <Setting Name="Densityset" Type="System.String" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
+    <Setting Name="Aliveset" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Stayset" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

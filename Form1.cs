@@ -24,6 +24,8 @@ namespace _life_
         private int orig_height;
         private int orig_resolution;
         private Image orig_image;
+        private List<int> toalive;
+        private List<int> tostay;
         public Form1()
         {
            
@@ -31,16 +33,31 @@ namespace _life_
             Resolution.Value = Properties.Settings.Default.Resolutionset;
             
         }
+        public List<int> getiinfo(ListBox listbox)
+        {
+            List<int> ind = new List<int>();
+            foreach(var ob in listbox.SelectedItems)
+            {
+                ind.Add(Int32.Parse(ob.ToString()));
+            }
+            if (ind.Count == 0)
+            { 
+                ind.Add(0);
+                listbox.SetSelected(0, true);
+            }
+            return ind;
+        }
       
         public void createmap() 
-        {   if (timer1.Enabled)
-                return;
+        {   
             Resolution.Enabled = false;
             Density.Enabled = false;
             zoom_slider.Enabled = true;
             resolution = (int)Resolution.Value;
             Resolution.Value = resolution;
             rows = field.Height / resolution;
+            toalive = getiinfo(to_alive);
+            tostay = getiinfo(to_stay);
             cols = field.Width / resolution;
             Properties.Settings.Default.Resolutionset=resolution;
             map = new bool[cols, rows];
@@ -90,9 +107,9 @@ namespace _life_
                 {
                     nextmap[i, j] = false;
 
-                    if (neighbours(i, j) == 3 && !map[i, j])
+                    if (toalive.Contains(neighbours(i, j)) && !map[i, j])
                         nextmap[i, j] = true;
-                    if ((neighbours(i, j) == 2 || neighbours(i, j) == 3) && map[i, j])
+                    if (tostay.Contains(neighbours(i, j)) && map[i, j])
                         nextmap[i, j] = true;
                   
                 }
@@ -120,7 +137,7 @@ namespace _life_
             if (gameison) return;
             
             createmap();
-            textBox1.Text = $"{cols} {rows}";
+            //textBox1.Text = $"{cols} {rows}";
         }
 
         private void stopbut_Click(object sender, EventArgs e)

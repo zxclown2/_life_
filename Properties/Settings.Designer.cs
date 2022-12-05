@@ -46,5 +46,29 @@ namespace _life_.Properties {
                 this["Densityset"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string Aliveset {
+            get {
+                return ((string)(this["Aliveset"]));
+            }
+            set {
+                this["Aliveset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string Stayset {
+            get {
+                return ((string)(this["Stayset"]));
+            }
+            set {
+                this["Stayset"] = value;
+            }
+        }
     }
 }
