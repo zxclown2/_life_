@@ -37,6 +37,7 @@ namespace _life_
                 return;
             Resolution.Enabled = false;
             Density.Enabled = false;
+            zoom_slider.Enabled = true;
             resolution = (int)Resolution.Value;
             Resolution.Value = resolution;
             rows = field.Height / resolution;
@@ -127,10 +128,10 @@ namespace _life_
             if (!gameison)
                 return;
           
-            timer1.Stop();  
-            gameison = false;
-            Resolution.Enabled = true;
-            Density.Enabled = true;
+            timer1.Stop();
+            return_to_default_size();
+          
+
         }
 
      
@@ -172,6 +173,19 @@ namespace _life_
          g = Graphics.FromImage(field.Image);
         drawmap();
            
+        }
+      public void  return_to_default_size()
+        {
+            gameison = false;
+            Resolution.Enabled = true;
+            Density.Enabled = true;
+            zoom_slider.Enabled = false;
+            zoom_slider.Value = 1;
+            field.Height = orig_height ;
+            field.Width = orig_width ;
+            resolution = orig_resolution ;
+            field.Image = new Bitmap(field.Width, field.Height);
+            g = Graphics.FromImage(field.Image);
         }
         private void zoom_slider_Scroll(object sender, EventArgs e)
         { if (!gameison) return;
