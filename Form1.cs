@@ -76,6 +76,8 @@ namespace _life_
             Resolution.Enabled = false;
             Density.Enabled = false;
             zoom_slider.Enabled = true;
+            to_alive.Enabled = false;
+            to_stay.Enabled = false;
             resolution = (int)Resolution.Value;
             Resolution.Value = resolution;
             rows = field.Height / resolution;
@@ -222,6 +224,8 @@ namespace _life_
             Resolution.Enabled = true;
             Density.Enabled = true;
             zoom_slider.Enabled = false;
+            to_stay.Enabled = true;
+            to_alive.Enabled = true;
             zoom_slider.Value = 1;
             field.Height = orig_height ;
             field.Width = orig_width ;
