@@ -32,6 +32,9 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Game = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.kval = new System.Windows.Forms.NumericUpDown();
+            this.next = new System.Windows.Forms.Button();
             this.load = new System.Windows.Forms.Button();
             this.save = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -59,6 +62,7 @@
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.Game.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.kval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.zoom_slider)).BeginInit();
             this.Settings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Resolution)).BeginInit();
@@ -101,6 +105,9 @@
             // 
             // Game
             // 
+            this.Game.Controls.Add(this.label4);
+            this.Game.Controls.Add(this.kval);
+            this.Game.Controls.Add(this.next);
             this.Game.Controls.Add(this.load);
             this.Game.Controls.Add(this.save);
             this.Game.Controls.Add(this.label3);
@@ -120,11 +127,54 @@
             this.Game.Text = "Game";
             this.Game.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 347);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 19);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "set k";
+            // 
+            // kval
+            // 
+            this.kval.Enabled = false;
+            this.kval.Location = new System.Drawing.Point(3, 317);
+            this.kval.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.kval.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.kval.Name = "kval";
+            this.kval.Size = new System.Drawing.Size(120, 27);
+            this.kval.TabIndex = 15;
+            this.kval.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // next
+            // 
+            this.next.Enabled = false;
+            this.next.Location = new System.Drawing.Point(-6, 280);
+            this.next.Name = "next";
+            this.next.Size = new System.Drawing.Size(135, 31);
+            this.next.TabIndex = 14;
+            this.next.Text = "next k moves";
+            this.next.UseVisualStyleBackColor = true;
+            this.next.Click += new System.EventHandler(this.next_Click);
+            // 
             // load
             // 
             this.load.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.load.Enabled = false;
-            this.load.Location = new System.Drawing.Point(-1, 280);
+            this.load.Location = new System.Drawing.Point(-1, 243);
             this.load.Name = "load";
             this.load.Size = new System.Drawing.Size(135, 31);
             this.load.TabIndex = 13;
@@ -136,7 +186,7 @@
             // 
             this.save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.save.Enabled = false;
-            this.save.Location = new System.Drawing.Point(-1, 243);
+            this.save.Location = new System.Drawing.Point(-1, 206);
             this.save.Name = "save";
             this.save.Size = new System.Drawing.Size(135, 31);
             this.save.TabIndex = 12;
@@ -147,7 +197,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(-1, 314);
+            this.label3.Location = new System.Drawing.Point(6, 422);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 19);
             this.label3.TabIndex = 11;
@@ -155,7 +205,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(-4, 398);
+            this.textBox1.Location = new System.Drawing.Point(0, 444);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 27);
             this.textBox1.TabIndex = 8;
@@ -163,7 +213,7 @@
             // generate
             // 
             this.generate.Enabled = false;
-            this.generate.Location = new System.Drawing.Point(-1, 206);
+            this.generate.Location = new System.Drawing.Point(-1, 169);
             this.generate.Name = "generate";
             this.generate.Size = new System.Drawing.Size(135, 31);
             this.generate.TabIndex = 10;
@@ -175,7 +225,7 @@
             // 
             this.zoom_slider.Enabled = false;
             this.zoom_slider.LargeChange = 1;
-            this.zoom_slider.Location = new System.Drawing.Point(-4, 336);
+            this.zoom_slider.Location = new System.Drawing.Point(3, 369);
             this.zoom_slider.Maximum = 5;
             this.zoom_slider.Minimum = 1;
             this.zoom_slider.Name = "zoom_slider";
@@ -186,7 +236,7 @@
             // 
             // startbut
             // 
-            this.startbut.Location = new System.Drawing.Point(-1, 58);
+            this.startbut.Location = new System.Drawing.Point(-1, 21);
             this.startbut.Name = "startbut";
             this.startbut.Size = new System.Drawing.Size(135, 31);
             this.startbut.TabIndex = 4;
@@ -196,7 +246,7 @@
             // 
             // stopbut
             // 
-            this.stopbut.Location = new System.Drawing.Point(-1, 95);
+            this.stopbut.Location = new System.Drawing.Point(-1, 58);
             this.stopbut.Name = "stopbut";
             this.stopbut.Size = new System.Drawing.Size(135, 31);
             this.stopbut.TabIndex = 5;
@@ -207,7 +257,7 @@
             // tim_start
             // 
             this.tim_start.Enabled = false;
-            this.tim_start.Location = new System.Drawing.Point(-1, 132);
+            this.tim_start.Location = new System.Drawing.Point(-1, 95);
             this.tim_start.Name = "tim_start";
             this.tim_start.Size = new System.Drawing.Size(135, 31);
             this.tim_start.TabIndex = 6;
@@ -218,7 +268,7 @@
             // tim_stop
             // 
             this.tim_stop.Enabled = false;
-            this.tim_stop.Location = new System.Drawing.Point(-1, 169);
+            this.tim_stop.Location = new System.Drawing.Point(-1, 132);
             this.tim_stop.Name = "tim_stop";
             this.tim_stop.Size = new System.Drawing.Size(135, 31);
             this.tim_stop.TabIndex = 7;
@@ -372,6 +422,7 @@
             this.field.TabIndex = 0;
             this.field.TabStop = false;
             this.field.MouseClick += new System.Windows.Forms.MouseEventHandler(this.field_MouseClick);
+            this.field.MouseMove += new System.Windows.Forms.MouseEventHandler(this.field_MouseMove);
             // 
             // timer1
             // 
@@ -395,6 +446,7 @@
             this.tabControl1.ResumeLayout(false);
             this.Game.ResumeLayout(false);
             this.Game.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.kval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.zoom_slider)).EndInit();
             this.Settings.ResumeLayout(false);
             this.Settings.PerformLayout();
@@ -431,6 +483,9 @@
         private System.Windows.Forms.ListBox to_stay;
         private System.Windows.Forms.Button save;
         private System.Windows.Forms.Button load;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown kval;
+        private System.Windows.Forms.Button next;
     }
 }
 

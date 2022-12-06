@@ -5,9 +5,13 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.AccessControl;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -27,6 +31,7 @@ namespace _life_
         private Image orig_image;
         private List<int> toalive;
         private List<int> tostay;
+        private int[,] livelen;
         public Form1()
         {
            
@@ -84,6 +89,8 @@ namespace _life_
             generate.Enabled = true;
             tim_start.Enabled = true;
             tim_stop.Enabled = true;
+            kval.Enabled = true;
+            next.Enabled = true;
             resolution = (int)Resolution.Value;
             Resolution.Value = resolution;
             rows = field.Height / resolution;
@@ -94,6 +101,7 @@ namespace _life_
             Properties.Settings.Default.Aliveset = tostring(toalive);
             Properties.Settings.Default.Stayset=tostring(tostay);
             map = new bool[cols, rows];
+            livelen=new int[cols, rows];     
             field.Image = new Bitmap(field.Width, field.Height);
             orig_image=field.Image;
             orig_height = field.Height;
@@ -133,7 +141,14 @@ namespace _life_
             field.Refresh();
         }
         public void nextmove()
-        {  bool[,] nextmap=new bool[cols,rows];
+        {
+            count_next_phase();
+            drawmap();
+
+        }
+        public void count_next_phase()
+        {
+            bool[,] nextmap = new bool[cols, rows];
             for (int i = 0; i < cols; i++)
             {
                 for (int j = 0; j < rows; j++)
@@ -144,19 +159,18 @@ namespace _life_
                         nextmap[i, j] = true;
                     if (tostay.Contains(neighbours(i, j)) && map[i, j])
                         nextmap[i, j] = true;
-                  
+
                 }
             }
             for (int i = 0; i < cols; i++)
             {
                 for (int j = 0; j < rows; j++)
                 {
-                    map[i,j]=nextmap[i,j];
+                    map[i, j] = nextmap[i, j];
+                    livelen[i, j] += map[i, j] ? 1 : 0;
+                    livelen[i, j] *= map[i, j] ? 1 : 0;
                 }
             }
-
-            drawmap();
-
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -210,7 +224,7 @@ namespace _life_
             map[x, y] = !map[x, y];
             drawmap();
         }
-        public void PictureBoxZoom(Image img, int zoom)
+        public void PictureBoxZoom(int zoom)
         {
             //    cols=cols*Size.Width;
             //  rows=rows*Size.Height;
@@ -237,6 +251,8 @@ namespace _life_
             generate.Enabled = false;
             tim_start.Enabled = false;
             tim_stop.Enabled = false;
+            kval.Enabled = false ;
+            next.Enabled = false;
             zoom_slider.Value = 1;
             field.Height = orig_height ;
             field.Width = orig_width ;
@@ -250,7 +266,7 @@ namespace _life_
             {
                 zoom = zoom_slider.Value;
                 textBox1.Text = zoom_slider.Value.ToString();
-                 PictureBoxZoom(orig_image, zoom);
+                 PictureBoxZoom( zoom);
             }
         }
 
@@ -276,13 +292,13 @@ namespace _life_
             
         }
 
-        private void save_Click(object sender, EventArgs e)
+        private async void save_Click(object sender, EventArgs e)
         {
 
             Stream myStream;
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
-            saveFileDialog1.Filter = "bmp files (*.bmp)|*.bmp";
+            saveFileDialog1.Filter = "bmp files (*.bmp)|*.bmp|txt files (*.txt)|*.txt";
             saveFileDialog1.FilterIndex = 2;
             saveFileDialog1.RestoreDirectory = true;
             string filePath = "";
@@ -298,14 +314,44 @@ namespace _life_
             }
             if (filePath == String.Empty)
                 return;
-            Bitmap bmp = new Bitmap(field.Image);
-            bmp.Save(filePath,System.Drawing.Imaging.ImageFormat.Bmp);
+            var extension = Path.GetExtension(filePath);
+            if (extension.ToLower()==".bmp")
+            {
+                var temp = zoom_slider.Value;
+                PictureBoxZoom(1);
+                Bitmap bmp = new Bitmap(field.Image);
+                PictureBoxZoom(temp);
+                bmp.Save(filePath, System.Drawing.Imaging.ImageFormat.Bmp);
+            }
+            else
+            {
+               
+                
+                    string ans = "";
+                for (int i = 0; i < cols; i++)
+                {
+                    for (int j = 0; j < rows; j++)
+                    {
+                        ans += map[i, j] ? "1" : "0";
+                    }
+
+                }
+                    
+                
+
+
+
+ 
+                
+
+            }
         }
 
         private void load_Click(object sender, EventArgs e)
-        { 
-          //  if (g == null) return;
-
+        {
+            //  if (g == null) return;
+            Array.Clear(livelen,0,livelen.Length);
+            zoom_slider.Value = 1;
             string filePath = "";
                 OpenFileDialog ofd = new OpenFileDialog();
                 if (ofd.ShowDialog() == DialogResult.OK)
@@ -339,6 +385,24 @@ namespace _life_
                 drawmap();
 
          }
-        
+
+        private void next_Click(object sender, EventArgs e)
+        {
+            int k = (int)kval.Value;
+            for (int i = 0; i < k; i++)
+                count_next_phase();
+            drawmap();
+        }
+
+        private void field_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!gameison) return;
+
+            Point p = e.Location;
+            int x = e.X / resolution;
+            int y = e.Y / resolution;
+            if (x >= cols || y >= rows || x < 0 || y < 0) return;
+            textBox1.Text = $"{livelen[x,y]}";
+        }
     }
 }
