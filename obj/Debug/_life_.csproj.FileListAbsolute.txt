@@ -3,9 +3,9 @@ C:\Users\Fedor\source\repos\_life_\bin\Debug\_life_.exe
 C:\Users\Fedor\source\repos\_life_\bin\Debug\_life_.pdb
 C:\Users\Fedor\source\repos\_life_\obj\Debug\_life_.csproj.AssemblyReference.cache
 C:\Users\Fedor\source\repos\_life_\obj\Debug\_life_.csproj.SuggestedBindingRedirects.cache
-C:\Users\Fedor\source\repos\_life_\obj\Debug\_life_.Form1.resources
 C:\Users\Fedor\source\repos\_life_\obj\Debug\_life_.Properties.Resources.resources
 C:\Users\Fedor\source\repos\_life_\obj\Debug\_life_.csproj.GenerateResource.cache
 C:\Users\Fedor\source\repos\_life_\obj\Debug\_life_.csproj.CoreCompileInputs.cache
 C:\Users\Fedor\source\repos\_life_\obj\Debug\_life_.exe
 C:\Users\Fedor\source\repos\_life_\obj\Debug\_life_.pdb
+C:\Users\Fedor\source\repos\_life_\obj\Debug\_life_.Dota3.resources

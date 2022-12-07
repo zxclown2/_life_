@@ -18,7 +18,7 @@ using System.Windows.Forms;
 
 namespace _life_
 {
-    public partial class Form1 : Form
+    public partial class Dota3 : Form
     {   private Graphics g;
         private int resolution;
         private bool [,] map;
@@ -33,7 +33,7 @@ namespace _life_
         private List<int> toalive;
         private List<int> tostay;
         private int[,] livelen;
-        public Form1()
+        public Dota3()
         {
            
             InitializeComponent();
@@ -185,6 +185,7 @@ namespace _life_
             if (gameison) return;
             
             createmap();
+           // g.Clear(Color.White);
             //textBox1.Text = $"{cols} {rows}";
         }
 
