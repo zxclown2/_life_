@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -325,24 +326,29 @@ namespace _life_
             }
             else
             {
-               
-                
-                    string ans = "";
-                for (int i = 0; i < cols; i++)
+                var temp = zoom_slider.Value;
+                PictureBoxZoom(1);
+                Bitmap bmp = new Bitmap(field.Image);
+                byte[] ans = new byte[orig_width * orig_height];
+                for(int i=0;i<orig_width;i++)
                 {
-                    for (int j = 0; j < rows; j++)
+                    for (int j = 0; j<orig_height;j++)
                     {
-                        ans += map[i, j] ? "1" : "0";
+                        ans[i * rows + j] = bmp.GetPixel(i,j).Name.Equals("ff000000") ? (byte)1 : (byte)0;
                     }
-
                 }
-                    
-                
+                //    Trace.WriteLine(ans.Length);
+                PictureBoxZoom(temp);
+
+                File.WriteAllBytes(filePath, ans);
+
+             
 
 
 
- 
-                
+
+
+
 
             }
         }
@@ -352,6 +358,7 @@ namespace _life_
             //  if (g == null) return;
             Array.Clear(livelen,0,livelen.Length);
             zoom_slider.Value = 1;
+            PictureBoxZoom(1);
             string filePath = "";
                 OpenFileDialog ofd = new OpenFileDialog();
                 if (ofd.ShowDialog() == DialogResult.OK)
@@ -360,29 +367,45 @@ namespace _life_
                 }
                 if (filePath == String.Empty)
                     return;
-               Bitmap bitmap = new Bitmap(filePath);
-             
-                resolution = (int)Resolution.Value;
-               cols = bitmap.Width/resolution;
-               rows=bitmap.Height/resolution;
-               map = new bool[cols, rows];
-           
-            textBox1.Text = $"{cols} {rows}";
-           // field.Image = bitmap;
-            for (int i=0; i < cols; i++)
-              {
-                for(int j=0;j<rows;j++)
-                {
-                 
-                    map[i, j] = false;
+            var extension = Path.GetExtension(filePath);
+            if (extension.ToLower() == ".bmp")
+            {
+                Bitmap bitmap = new Bitmap(filePath);
 
-                    if (bitmap.GetPixel(i * resolution, j * resolution).Name.Equals("ff000000")) 
-                        map[i, j] = true;
+                resolution = (int)Resolution.Value;
+                cols = bitmap.Width / resolution;
+                rows = bitmap.Height / resolution;
+                map = new bool[cols, rows];
+
+                textBox1.Text = $"{cols} {rows}";
+                // field.Image = bitmap;
+                for (int i = 0; i < cols; i++)
+                {
+                    for (int j = 0; j < rows; j++)
+                    {
+
+                        map[i, j] = false;
+
+                        if (bitmap.GetPixel(i * resolution, j * resolution).Name.Equals("ff000000"))
+                            map[i, j] = true;
+                    }
                 }
-              }
-           
+
 
                 drawmap();
+            }
+            else
+            {
+               var res=File.ReadAllBytes(filePath);
+               // Trace.WriteLine(res.Length);
+               // int[] val=new int[8];
+                for(int t=0;t<res.Length; t++)
+                {
+                    map[t / rows/resolution, t % rows/resolution] = res[t] == (byte)0 ? false : true;
+                }
+
+                drawmap();
+            }
 
          }
 
