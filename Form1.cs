@@ -357,9 +357,7 @@ namespace _life_
         private void load_Click(object sender, EventArgs e)
         {
             //  if (g == null) return;
-            Array.Clear(livelen,0,livelen.Length);
-            zoom_slider.Value = 1;
-            PictureBoxZoom(1);
+           
             string filePath = "";
                 OpenFileDialog ofd = new OpenFileDialog();
                 if (ofd.ShowDialog() == DialogResult.OK)
@@ -368,6 +366,9 @@ namespace _life_
                 }
                 if (filePath == String.Empty)
                     return;
+            Array.Clear(livelen, 0, livelen.Length);
+            zoom_slider.Value = 1;
+            PictureBoxZoom(1);
             var extension = Path.GetExtension(filePath);
             if (extension.ToLower() == ".bmp")
             {
