@@ -166,10 +166,10 @@ namespace _life_
             Resolution.Value = resolution;
             int cols = field.Width / resolution;
             int rows = field.Height / resolution;
-            _map = new my_map(cols, rows, new bool[cols, rows], new int[cols, rows], new List<int> { 3 }, new List<int> { 2, 3 });
+            _map = new my_map(cols, rows, new bool[cols, rows], new int[cols, rows], getiinfo(to_alive), getiinfo(to_stay));
             Properties.Settings.Default.Resolutionset=resolution;
-           // Properties.Settings.Default.Aliveset = tostring(toalive);
-            //Properties.Settings.Default.Stayset=tostring(tostay);
+            Properties.Settings.Default.Aliveset = tostring(_map.toalive);
+            Properties.Settings.Default.Stayset=tostring(_map.tostay);
             field.Image = new Bitmap(field.Width, field.Height);
             orig_image=field.Image;
             orig_height = field.Height;
@@ -215,8 +215,7 @@ namespace _life_
             if (gameison) return;
             
             createmap();
-           // g.Clear(Color.White);
-            //textBox1.Text = $"{cols} {rows}";
+          
         }
 
         private void stopbut_Click(object sender, EventArgs e)
