@@ -8,4 +8,4 @@ C:\Users\Fedor\source\repos\_life_\obj\Release\_life_.csproj.GenerateResource.ca
 C:\Users\Fedor\source\repos\_life_\obj\Release\_life_.csproj.CoreCompileInputs.cache
 C:\Users\Fedor\source\repos\_life_\obj\Release\_life_.exe
 C:\Users\Fedor\source\repos\_life_\obj\Release\_life_.pdb
-C:\Users\Fedor\source\repos\_life_\obj\Release\_life_.my_map.resources
+C:\Users\Fedor\source\repos\_life_\obj\Release\_life_.Dota3.resources

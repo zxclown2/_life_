@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dota3));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Game = new System.Windows.Forms.TabPage();
@@ -87,6 +86,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
+            this.splitContainer1.Panel2.BackColor = System.Drawing.Color.Gainsboro;
             this.splitContainer1.Panel2.Controls.Add(this.field);
             this.splitContainer1.Size = new System.Drawing.Size(931, 589);
             this.splitContainer1.SplitterDistance = 183;
@@ -415,6 +415,7 @@
             // 
             // field
             // 
+            this.field.BackColor = System.Drawing.Color.LightGray;
             this.field.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.field.Location = new System.Drawing.Point(0, 0);
             this.field.Name = "field";
@@ -437,7 +438,6 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(931, 589);
             this.Controls.Add(this.splitContainer1);
-           // this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Dota3";
             this.Text = "_life_";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
