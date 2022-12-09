@@ -77,21 +77,25 @@ namespace _life_
             return ans;
 
         }
+        public void chabge_enable()
+        {
+            Resolution.Enabled = !Resolution.Enabled;
+            Density.Enabled = !Density.Enabled;
+            zoom_slider.Enabled = !zoom_slider.Enabled;
+            to_alive.Enabled = !to_alive.Enabled;
+            to_stay.Enabled = !to_stay.Enabled;
+            save.Enabled = !save.Enabled;
+            load.Enabled = !load.Enabled;
+            generate.Enabled = !generate.Enabled;
+            tim_start.Enabled = !tim_start.Enabled;
+            tim_stop.Enabled = !tim_stop.Enabled;
+            kval.Enabled = !kval.Enabled;
+            next.Enabled = !next.Enabled;
+        }
 
         public void createmap()
         {
-            Resolution.Enabled = false;
-            Density.Enabled = false;
-            zoom_slider.Enabled = true;
-            to_alive.Enabled = false;
-            to_stay.Enabled = false;
-            save.Enabled = true;
-            load.Enabled = true;
-            generate.Enabled = true;
-            tim_start.Enabled = true;
-            tim_stop.Enabled = true;
-            kval.Enabled = true;
-            next.Enabled = true;
+            chabge_enable();
             resolution = (int)Resolution.Value;
             Resolution.Value = resolution;
             int cols = field.Width / resolution;
@@ -189,9 +193,6 @@ namespace _life_
         }
         public void PictureBoxZoom(int zoom)
         {
-            //    cols=cols*Size.Width;
-            //  rows=rows*Size.Height;
-
             field.Height = orig_height * zoom;
             field.Width = orig_width * zoom;
             resolution = orig_resolution * zoom;
@@ -204,18 +205,7 @@ namespace _life_
         public void return_to_default_size()
         {
             gameison = false;
-            Resolution.Enabled = true;
-            Density.Enabled = true;
-            zoom_slider.Enabled = false;
-            to_stay.Enabled = true;
-            to_alive.Enabled = true;
-            load.Enabled = false;
-            save.Enabled = false;
-            generate.Enabled = false;
-            tim_start.Enabled = false;
-            tim_stop.Enabled = false;
-            kval.Enabled = false;
-            next.Enabled = false;
+            chabge_enable();
             zoom_slider.Value = 1;
             field.Height = orig_height;
             field.Width = orig_width;
@@ -332,9 +322,7 @@ namespace _life_
 
                 resolution = (int)Resolution.Value;
                 _map.resize(bitmap.Width / resolution, bitmap.Height / resolution);
-
                 textBox1.Text = $"{_map.cols} {_map.rows}";
-                // field.Image = bitmap;
                 for (int i = 0; i < _map.cols; i++)
                 {
                     for (int j = 0; j < _map.rows; j++)
@@ -353,10 +341,6 @@ namespace _life_
             else
             {
                 var res = File.ReadAllBytes(filePath);
-                // Trace.WriteLine(res.Length);
-                // int[] val=new int[8];
-                //Trace.Write($"{_map.cols},{_map.rows}");\
-                //res.length=
                 for(int i=0;i<_map.cols;i++)
                 {
                     for(int j=0;j<_map.rows;j++)
@@ -364,26 +348,7 @@ namespace _life_
                         _map.map[i, j] = res[i * orig_height * resolution + j * resolution] == (byte)0 ? false : true;
                     }
                 }
-             /*   bool[,] mp = new bool[orig_width, orig_height];
-                for (int i = 0; i < orig_width; i++)
-                {
-                    for (int j = 0; j < orig_height; j++)
-                    {
-                       mp[i, j] = res[i * orig_height  + j] == (byte)0 ? false : true;
-                    }
-                }
-                for (int i = 0; i < _map.cols; i++)
-                {
-                    for (int j = 0; j < _map.rows; j++)
-                    {
-
-                        _map.map[i, j] = false;
-
-                        if (mp[i*resolution,j*resolution])
-                            _map.map[i, j] = true;
-                    }
-                }*/
-
+         
                 drawmap();
             }
 
