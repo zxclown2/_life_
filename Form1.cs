@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
+
 using System.Drawing;
-using System.Drawing.Drawing2D;
+
 using System.IO;
-using System.IO.MemoryMappedFiles;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+
 using System.Windows.Forms;
 
 namespace _life_
@@ -149,8 +140,15 @@ namespace _life_
         private void startbut_Click(object sender, EventArgs e)
         {
             if (gameison) return;
-
             createmap();
+            var res = MessageBox.Show("Do you want to download any game?", "???", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (res == DialogResult.Yes)
+            {
+
+                load_Click(sender, e);
+            }
+
+           
 
         }
 
@@ -160,7 +158,15 @@ namespace _life_
                 return;
 
             timer1.Stop();
+            var res = MessageBox.Show("Do you want to save changes?", "???", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (res == DialogResult.Yes)
+            {
+
+                save_Click(sender, e);
+            }
             return_to_default_size();
+           
+
 
 
         }
@@ -234,7 +240,7 @@ namespace _life_
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+           
             Properties.Settings.Default.Save();
 
 
@@ -277,6 +283,7 @@ namespace _life_
                 PictureBoxZoom(1);
                 Bitmap bmp = new Bitmap(field.Image);
                 byte[] ans = new byte[orig_width * orig_height];
+                PictureBoxZoom(temp);
                 for (int i = 0; i < orig_width; i++)
                 {
                     for (int j = 0; j < orig_height; j++)
@@ -285,7 +292,7 @@ namespace _life_
                     }
                 }
 
-                PictureBoxZoom(temp);
+              
 
                 File.WriteAllBytes(filePath, ans);
 
@@ -372,6 +379,8 @@ namespace _life_
              if (x >= _map.cols || y >= _map.rows || x < 0 || y < 0) return;
             textBox1.Text = $"{_map.livelen[x, y]}";
         }
+
+       
     }
     public class my_map
     {
