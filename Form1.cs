@@ -294,7 +294,7 @@ namespace _life_
             
         }
 
-        private async void save_Click(object sender, EventArgs e)
+        private void save_Click(object sender, EventArgs e)
         {
 
             Stream myStream;
@@ -331,19 +331,19 @@ namespace _life_
                 PictureBoxZoom(1);
                 Bitmap bmp = new Bitmap(field.Image);
                 byte[] ans = new byte[orig_width * orig_height];
-                for(int i=0;i<orig_width;i++)
+                for (int i = 0; i < orig_width; i++)
                 {
-                    for (int j = 0; j<orig_height;j++)
+                    for (int j = 0; j < orig_height; j++)
                     {
-                        ans[i * rows + j] = bmp.GetPixel(i,j).Name.Equals("ff000000") ? (byte)1 : (byte)0;
+                        ans[i * rows + j] = bmp.GetPixel(i, j).Name.Equals("ff000000") ? (byte)1 : (byte)0;
                     }
                 }
-                //    Trace.WriteLine(ans.Length);
+                
                 PictureBoxZoom(temp);
 
                 File.WriteAllBytes(filePath, ans);
 
-             
+
 
 
 
