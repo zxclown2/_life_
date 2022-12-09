@@ -18,21 +18,91 @@ using System.Windows.Forms;
 
 namespace _life_
 {
+    public class my_map
+    {
+        public int cols, rows;
+        public bool[,] map;
+        public int[,] livelen;
+        public List<int> toalive;
+        public List<int> tostay;
+        public my_map(int cols, int rows, bool[,] map, int[,] livelen, List<int> toalive, List<int> tostay)
+        {
+            this.cols = cols;
+            this.rows = rows;
+            this.map = map;
+            this.livelen = livelen;
+            this.toalive = toalive;
+            this.tostay = tostay;
+        }
+        public int neighbours(int x, int y)
+        {
+            int ans = 0;
+            for (int i = x - 1; i <= x + 1; i++)
+            {
+                for (int j = y - 1; j <= y + 1; j++)
+                {
+                    if ((i != x || j != y) && map[(i + 2 * cols) % cols, (j + 2 * rows) % rows])
+                        ans++;
+                }
+            }
+            return ans;
+        }
+        public void count_next_phase()
+        {
+            bool[,] nextmap = new bool[cols, rows];
+            for (int i = 0; i < cols; i++)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    nextmap[i, j] = false;
+
+                    if (toalive.Contains(neighbours(i, j)) && !map[i, j])
+                        nextmap[i, j] = true;
+                    if (tostay.Contains(neighbours(i, j)) && map[i, j])
+                        nextmap[i, j] = true;
+
+                }
+            }
+            for (int i = 0; i < cols; i++)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    map[i, j] = nextmap[i, j];
+                    livelen[i, j] += map[i, j] ? 1 : 0;
+                    livelen[i, j] *= map[i, j] ? 1 : 0;
+                }
+            }
+        }
+        public void random()
+        {
+            var rnd = new Random();
+            for (int i = 0; i < cols; i++)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    map[i, j] = rnd.Next(2) == 0;
+                }
+            }
+        }
+        public void resize(int cols,int rows)
+        {
+            this.cols=cols;
+            this.rows=rows;
+            this.map = new bool[cols, rows];
+        }
+    }
     public partial class Dota3 : Form
     {   private Graphics g;
         private int resolution;
-        private bool [,] map;
-        private int rows; //y
-        private int cols; //x
+        private my_map _map;
         private bool gameison;
         private int zoom;
         private int orig_width;
         private int orig_height;
         private int orig_resolution;
         private Image orig_image;
-        private List<int> toalive;
-        private List<int> tostay;
-        private int[,] livelen;
+       
+        
         public Dota3()
         {
            
@@ -94,15 +164,12 @@ namespace _life_
             next.Enabled = true;
             resolution = (int)Resolution.Value;
             Resolution.Value = resolution;
-            rows = field.Height / resolution;
-            toalive = getiinfo(to_alive);
-            tostay = getiinfo(to_stay);
-            cols = field.Width / resolution;
+            int cols = field.Width / resolution;
+            int rows = field.Height / resolution;
+            _map = new my_map(cols, rows, new bool[cols, rows], new int[cols, rows], new List<int> { 3 }, new List<int> { 2, 3 });
             Properties.Settings.Default.Resolutionset=resolution;
-            Properties.Settings.Default.Aliveset = tostring(toalive);
-            Properties.Settings.Default.Stayset=tostring(tostay);
-            map = new bool[cols, rows];
-            livelen=new int[cols, rows];     
+           // Properties.Settings.Default.Aliveset = tostring(toalive);
+            //Properties.Settings.Default.Stayset=tostring(tostay);
             field.Image = new Bitmap(field.Width, field.Height);
             orig_image=field.Image;
             orig_height = field.Height;
@@ -111,28 +178,16 @@ namespace _life_
             g = Graphics.FromImage(field.Image);
             gameison = true;
         }
-        public int neighbours(int x, int y)
-        {
-            int ans = 0;
-            for (int i = x - 1; i <= x + 1; i++)
-            {
-                for (int j = y - 1; j <= y + 1; j++)
-                {
-                    if ((i != x || j != y) && map[(i + 2 * cols) % cols, (j + 2 * rows) % rows])
-                        ans++;
-                }
-            }
-            return ans;
-        }
+       
 
         public void drawmap()
         {
             g.Clear(Color.White);
-            for (int i = 0; i < cols; i++)
+            for (int i = 0; i < _map.cols; i++)
             {
-                for (int j = 0; j < rows; j++)
+                for (int j = 0; j < _map.rows; j++)
                 {
-                    if (map[i,j])
+                    if (_map.map[i,j])
                     {
                         g.FillRectangle(Brushes.Black,i * resolution, j * resolution, resolution, resolution);
                     }
@@ -143,36 +198,11 @@ namespace _life_
         }
         public void nextmove()
         {
-            count_next_phase();
+            _map.count_next_phase();
             drawmap();
 
         }
-        public void count_next_phase()
-        {
-            bool[,] nextmap = new bool[cols, rows];
-            for (int i = 0; i < cols; i++)
-            {
-                for (int j = 0; j < rows; j++)
-                {
-                    nextmap[i, j] = false;
-
-                    if (toalive.Contains(neighbours(i, j)) && !map[i, j])
-                        nextmap[i, j] = true;
-                    if (tostay.Contains(neighbours(i, j)) && map[i, j])
-                        nextmap[i, j] = true;
-
-                }
-            }
-            for (int i = 0; i < cols; i++)
-            {
-                for (int j = 0; j < rows; j++)
-                {
-                    map[i, j] = nextmap[i, j];
-                    livelen[i, j] += map[i, j] ? 1 : 0;
-                    livelen[i, j] *= map[i, j] ? 1 : 0;
-                }
-            }
-        }
+      
         private void timer1_Tick(object sender, EventArgs e)
         {
             nextmove();
@@ -221,9 +251,9 @@ namespace _life_
             Point p = e.Location;
             int x = e.X / resolution;
             int y = e.Y / resolution;
-            if (x >= cols || y >= rows || x < 0 || y < 0) return;
+            if (x >= _map.cols || y >= _map.rows || x < 0 || y < 0) return;
             if (e.Button != MouseButtons.Left) return;
-            map[x, y] = !map[x, y];
+            _map.map[x, y] = !_map.map[x, y];
             drawmap();
         }
         public void PictureBoxZoom(int zoom)
@@ -274,15 +304,8 @@ namespace _life_
 
         private void generate_Click(object sender, EventArgs e)
         {  if (!gameison) return;
-           
-            var rnd= new Random();
-            for(int i=0;i<cols;i++)
-            {
-                for(int j=0;j<rows;j++)
-                {
-                    map[i, j] = rnd.Next((int)Density.Value) == 0;
-                }
-            }
+
+            _map.random();
             drawmap();
         }
        
@@ -335,7 +358,7 @@ namespace _life_
                 {
                     for (int j = 0; j < orig_height; j++)
                     {
-                        ans[i * rows + j] = bmp.GetPixel(i, j).Name.Equals("ff000000") ? (byte)1 : (byte)0;
+                        ans[i * _map.rows + j] = bmp.GetPixel(i, j).Name.Equals("ff000000") ? (byte)1 : (byte)0;
                     }
                 }
                 
@@ -366,7 +389,7 @@ namespace _life_
                 }
                 if (filePath == String.Empty)
                     return;
-            Array.Clear(livelen, 0, livelen.Length);
+            Array.Clear(_map.livelen, 0, _map.livelen.Length);
             zoom_slider.Value = 1;
             PictureBoxZoom(1);
             var extension = Path.GetExtension(filePath);
@@ -375,21 +398,19 @@ namespace _life_
                 Bitmap bitmap = new Bitmap(filePath);
 
                 resolution = (int)Resolution.Value;
-                cols = bitmap.Width / resolution;
-                rows = bitmap.Height / resolution;
-                map = new bool[cols, rows];
-
-                textBox1.Text = $"{cols} {rows}";
+                _map.resize(bitmap.Width / resolution, bitmap.Height / resolution);
+               
+                textBox1.Text = $"{_map.cols} {_map.rows}";
                 // field.Image = bitmap;
-                for (int i = 0; i < cols; i++)
+                for (int i = 0; i < _map.cols; i++)
                 {
-                    for (int j = 0; j < rows; j++)
+                    for (int j = 0; j < _map.rows; j++)
                     {
 
-                        map[i, j] = false;
+                        _map.map[i, j] = false;
 
                         if (bitmap.GetPixel(i * resolution, j * resolution).Name.Equals("ff000000"))
-                            map[i, j] = true;
+                            _map.map[i, j] = true;
                     }
                 }
 
@@ -399,11 +420,12 @@ namespace _life_
             else
             {
                var res=File.ReadAllBytes(filePath);
-               // Trace.WriteLine(res.Length);
-               // int[] val=new int[8];
+                // Trace.WriteLine(res.Length);
+                // int[] val=new int[8];
+                //Trace.Write($"{_map.cols},{_map.rows}");
                 for(int t=0;t<res.Length; t++)
-                {
-                    map[t / rows/resolution, t % rows/resolution] = res[t] == (byte)0 ? false : true;
+                { //Trace.WriteLine($"{(t / _map.rows) / resolution} {(t % _map.rows) /resolution}");
+                    _map.map[t / (_map.rows *resolution), t %( _map.rows*resolution)] = res[t] == (byte)0 ? false : true;
                 }
 
                 drawmap();
@@ -415,7 +437,7 @@ namespace _life_
         {
             int k = (int)kval.Value;
             for (int i = 0; i < k; i++)
-                count_next_phase();
+                _map.count_next_phase();
             drawmap();
         }
 
@@ -426,8 +448,8 @@ namespace _life_
             Point p = e.Location;
             int x = e.X / resolution;
             int y = e.Y / resolution;
-            if (x >= cols || y >= rows || x < 0 || y < 0) return;
-            textBox1.Text = $"{livelen[x,y]}";
+            if (x >= _map.cols || y >= _map.rows || x < 0 || y < 0) return;
+            textBox1.Text = $"{_map.livelen[x,y]}";
         }
     }
 }
