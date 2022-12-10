@@ -1,6 +1,6 @@
 ﻿namespace _life_
 {
-    partial class Dota3
+    partial class life_form
     {
         /// <summary>
         /// Required designer variable.
@@ -431,18 +431,17 @@
             this.timer1.Interval = 20;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // Dota3
+            // life_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(931, 589);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Dota3";
+            this.Name = "life_form";
             this.Text = "_life_";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
-           // this.Load += new System.EventHandler(this.Form1_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();

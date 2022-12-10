@@ -10,20 +10,17 @@ using System.Windows.Forms;
 namespace _life_
 {
    
-    public partial class Dota3 : Form
+    public partial class life_form : Form
     {
-        private Graphics g;
-        private int resolution;
-        private my_map _map;
+        
+        private int resolution1;
         private bool gameison;
         private int zoom;
-        private int orig_width;
-        private int orig_height;
-        private int orig_resolution;
-        private Image orig_image;
+        private drawer _drawer;
+ 
 
 
-        public Dota3()
+        public life_form()
         {
 
             InitializeComponent();
@@ -87,46 +84,27 @@ namespace _life_
         public void createmap()
         {
             chabge_enable();
-            resolution = (int)Resolution.Value;
-            Resolution.Value = resolution;
-            int cols = field.Width / resolution;
-            int rows = field.Height / resolution;
+            
+            resolution1 = (int)Resolution.Value;
+            Resolution.Value = resolution1;
+            int cols = field.Width / resolution1;
+            int rows = field.Height / resolution1;
             textBox1.Text = $"{cols}, {rows}";
-            _map = new my_map(cols, rows, new bool[cols, rows], new int[cols, rows], getiinfo(to_alive), getiinfo(to_stay));
-            Properties.Settings.Default.Resolutionset = resolution;
+            my_map _map = new my_map(cols, rows, new bool[cols, rows], new int[cols, rows], getiinfo(to_alive), getiinfo(to_stay));
+            _drawer = new drawer(field,_map,resolution1, new Bitmap(field.Width, field.Height));
+            Properties.Settings.Default.Resolutionset = resolution1;
             Properties.Settings.Default.Aliveset = tostring(_map.toalive);
             Properties.Settings.Default.Stayset = tostring(_map.tostay);
-            field.Image = new Bitmap(field.Width, field.Height);
-            orig_image = field.Image;
-            orig_height = field.Height;
-            orig_width = field.Width;
-            orig_resolution = resolution;
-            g = Graphics.FromImage(field.Image);
-            g.Clear(Color.White);
+            _drawer.g.Clear(Color.White);
             gameison = true;
         }
 
 
-        public void drawmap()
-        {
-            g.Clear(Color.White);
-            for (int i = 0; i < _map.cols; i++)
-            {
-                for (int j = 0; j < _map.rows; j++)
-                {
-                    if (_map.map[i, j])
-                    {
-                        g.FillRectangle(Brushes.Black, i * resolution, j * resolution, resolution, resolution);
-                    }
-                }
-            }
-
-            field.Refresh();
-        }
+      
         public void nextmove()
         {
-            _map.count_next_phase();
-            drawmap();
+            _drawer.pb_map.count_next_phase();
+            _drawer.drawmap();
 
         }
 
@@ -164,7 +142,10 @@ namespace _life_
 
                 save_Click(sender, e);
             }
-            return_to_default_size();
+            gameison = false;
+            chabge_enable();
+            zoom_slider.Value = 1;
+            _drawer.return_to_default_size();
            
 
 
@@ -190,35 +171,15 @@ namespace _life_
             if (!gameison) return;
 
             Point p = e.Location;
-            int x = e.X / resolution;
-            int y = e.Y / resolution;
-            if (x >= _map.cols || y >= _map.rows || x < 0 || y < 0) return;
+            int x = e.X / _drawer.resolution;
+            int y = e.Y / _drawer.resolution;
+            if (x >= _drawer.pb_map.cols || y >= _drawer.pb_map.rows || x < 0 || y < 0) return;
             if (e.Button != MouseButtons.Left) return;
-            _map.map[x, y] = !_map.map[x, y];
-            drawmap();
+            _drawer.pb_map.map[x, y] = !_drawer.pb_map.map[x, y];
+            _drawer.drawmap();
         }
-        public void PictureBoxZoom(int zoom)
-        {
-            field.Height = orig_height * zoom;
-            field.Width = orig_width * zoom;
-            resolution = orig_resolution * zoom;
-            field.Image = null;
-            field.Image = new Bitmap(field.Width, field.Height);
-            g = Graphics.FromImage(field.Image);
-            drawmap();
-
-        }
-        public void return_to_default_size()
-        {
-            gameison = false;
-            chabge_enable();
-            zoom_slider.Value = 1;
-            field.Height = orig_height;
-            field.Width = orig_width;
-            resolution = orig_resolution;
-            field.Image = new Bitmap(field.Width, field.Height);
-            g = Graphics.FromImage(field.Image);
-        }
+     
+      
         private void zoom_slider_Scroll(object sender, EventArgs e)
         {
             if (!gameison) return;
@@ -226,16 +187,15 @@ namespace _life_
             {
                 zoom = zoom_slider.Value;
                 textBox1.Text = zoom_slider.Value.ToString();
-                PictureBoxZoom(zoom);
+                _drawer.PictureBoxZoom(zoom);
             }
         }
 
         private void generate_Click(object sender, EventArgs e)
         {
             if (!gameison) return;
-
-            _map.random();
-            drawmap();
+            _drawer.pb_map.random();
+            _drawer.drawmap();
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -272,23 +232,23 @@ namespace _life_
             if (extension.ToLower() == ".bmp")
             {
                 var temp = zoom_slider.Value;
-                PictureBoxZoom(1);
+                _drawer.PictureBoxZoom(1);
                 Bitmap bmp = new Bitmap(field.Image);
-                PictureBoxZoom(temp);
+                _drawer.PictureBoxZoom(temp);
                 bmp.Save(filePath, System.Drawing.Imaging.ImageFormat.Bmp);
             }
             else
             {
                 var temp = zoom_slider.Value;
-                PictureBoxZoom(1);
+                _drawer.PictureBoxZoom(1);
                 Bitmap bmp = new Bitmap(field.Image);
-                byte[] ans = new byte[orig_width * orig_height];
-                PictureBoxZoom(temp);
-                for (int i = 0; i < orig_width; i++)
+                byte[] ans = new byte[_drawer.orig_width * _drawer.orig_height];
+                _drawer.PictureBoxZoom(temp);
+                for (int i = 0; i < _drawer.orig_width; i++)
                 {
-                    for (int j = 0; j < orig_height; j++)
+                    for (int j = 0; j < _drawer.orig_height; j++)
                     {
-                        ans[i * orig_height + j] = bmp.GetPixel(i, j).Name.Equals("ff000000") ? (byte)1 : (byte)0;
+                        ans[i * _drawer.orig_height + j] = bmp.GetPixel(i, j).Name.Equals("ff000000") ? (byte)1 : (byte)0;
                     }
                 }
 
@@ -319,44 +279,44 @@ namespace _life_
             }
             if (filePath == String.Empty)
                 return;
-            Array.Clear(_map.livelen, 0, _map.livelen.Length);
+            Array.Clear(_drawer.pb_map.livelen, 0, _drawer.pb_map.livelen.Length);
             zoom_slider.Value = 1;
-            PictureBoxZoom(1);
+            _drawer.PictureBoxZoom(1);
             var extension = Path.GetExtension(filePath);
             if (extension.ToLower() == ".bmp")
             {
                 Bitmap bitmap = new Bitmap(filePath);
 
-                resolution = (int)Resolution.Value;
-                _map.resize(bitmap.Width / resolution, bitmap.Height / resolution);
-                textBox1.Text = $"{_map.cols} {_map.rows}";
-                for (int i = 0; i < _map.cols; i++)
+                _drawer.resolution = (int)Resolution.Value;
+                _drawer.pb_map.resize(bitmap.Width / _drawer.resolution, bitmap.Height / _drawer.resolution);
+                textBox1.Text = $"{_drawer.pb_map.cols} {_drawer.pb_map.rows}";
+                for (int i = 0; i < _drawer.pb_map.cols; i++)
                 {
-                    for (int j = 0; j < _map.rows; j++)
+                    for (int j = 0; j < _drawer.pb_map.rows; j++)
                     {
 
-                        _map.map[i, j] = false;
+                        _drawer.pb_map.map[i, j] = false;
 
-                        if (bitmap.GetPixel(i * resolution, j * resolution).Name.Equals("ff000000"))
-                            _map.map[i, j] = true;
+                        if (bitmap.GetPixel(i * _drawer.resolution, j * _drawer.resolution).Name.Equals("ff000000"))
+                            _drawer.pb_map.map[i, j] = true;
                     }
                 }
 
 
-                drawmap();
+                _drawer.drawmap();
             }
             else
             {
                 var res = File.ReadAllBytes(filePath);
-                for(int i=0;i<_map.cols;i++)
+                for(int i=0;i< _drawer.pb_map.cols;i++)
                 {
-                    for(int j=0;j<_map.rows;j++)
+                    for(int j=0;j< _drawer.pb_map.rows;j++)
                     {
-                        _map.map[i, j] = res[i * orig_height * resolution + j * resolution] == (byte)0 ? false : true;
+                        _drawer.pb_map.map[i, j] = res[i * _drawer.orig_height * _drawer.resolution + j * _drawer.resolution] == (byte)0 ? false : true;
                     }
                 }
-         
-                drawmap();
+
+                _drawer.drawmap();
             }
 
         }
@@ -365,8 +325,8 @@ namespace _life_
         {
             int k = (int)kval.Value;
             for (int i = 0; i < k; i++)
-                _map.count_next_phase();
-            drawmap();
+                _drawer.pb_map.count_next_phase();
+            _drawer.drawmap();
         }
 
         private void field_MouseMove(object sender, MouseEventArgs e)
@@ -374,10 +334,10 @@ namespace _life_
             if (!gameison) return;
 
             Point p = e.Location;
-            int x = e.X / resolution;
-            int y = e.Y / resolution;
-             if (x >= _map.cols || y >= _map.rows || x < 0 || y < 0) return;
-            textBox1.Text = $"{_map.livelen[x, y]}";
+            int x = e.X / _drawer.resolution;
+            int y = e.Y / _drawer.resolution;
+             if (x >= _drawer.pb_map.cols || y >= _drawer.pb_map.rows || x < 0 || y < 0) return;
+            textBox1.Text = $"{_drawer.pb_map.livelen[x, y]}";
         }
 
        
@@ -455,4 +415,68 @@ namespace _life_
             this.map = new bool[cols, rows];
         }
     }
+    public class drawer
+    {
+        public PictureBox picturebox;
+        public my_map pb_map;
+        public int resolution;
+        public Graphics g;
+        public Image Image;
+        public int orig_width;
+        public int orig_height;
+        public int orig_resolution;
+        public drawer(PictureBox pb,my_map mp,int res,Image img)
+        {
+            picturebox = pb;
+            pb_map = mp;
+            resolution = res;
+            Image = img;
+            orig_height = picturebox.Height;
+            orig_width=picturebox.Width;
+            orig_resolution = resolution;
+            g = Graphics.FromImage(img);
+        }
+        public void resize(int width,int height)
+        {
+            picturebox.Width = width;
+            picturebox.Height = height;
+        }
+        public void drawmap()
+        {
+            g.Clear(Color.White);
+            for (int i = 0; i < pb_map.cols; i++)
+            {
+                for (int j = 0; j < pb_map.rows; j++)
+                {
+                    if (pb_map.map[i, j])
+                    {
+                        g.FillRectangle(Brushes.Black, i * resolution, j * resolution, resolution, resolution);
+                    }
+                }
+            }
+
+            picturebox.Refresh();
+        }
+        public void PictureBoxZoom(int zoom)
+        {
+            picturebox.Height = orig_height * zoom;
+            picturebox.Width = orig_width * zoom;
+            resolution = orig_resolution * zoom;
+            picturebox.Image = null;
+            picturebox.Image = new Bitmap(picturebox.Width, picturebox.Height);
+            g = Graphics.FromImage(picturebox.Image);
+            drawmap();
+
+        }
+        public void return_to_default_size()
+        {
+
+            picturebox.Height = orig_height;
+            picturebox.Width = orig_width;
+            resolution = orig_resolution;
+            picturebox.Image = new Bitmap(picturebox.Width, picturebox.Height);
+            g = Graphics.FromImage(picturebox.Image);
+        }
+    }
+
 }

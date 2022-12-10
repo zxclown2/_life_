@@ -16,7 +16,7 @@ namespace _life_
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Dota3());
+            Application.Run(new life_form());
         }
     }
 }
