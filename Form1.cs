@@ -421,7 +421,6 @@ namespace _life_
         public my_map pb_map;
         public int resolution;
         public Graphics g;
-        public Image Image;
         public int orig_width;
         public int orig_height;
         public int orig_resolution;
@@ -430,10 +429,10 @@ namespace _life_
             picturebox = pb;
             pb_map = mp;
             resolution = res;
-            Image = img;
             orig_height = picturebox.Height;
             orig_width=picturebox.Width;
             orig_resolution = resolution;
+            picturebox.Image = img;
             g = Graphics.FromImage(img);
         }
         public void resize(int width,int height)
