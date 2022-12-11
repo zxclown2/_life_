@@ -286,6 +286,8 @@ namespace _life_
             if (extension.ToLower() == ".bmp")
             {
                 Bitmap bitmap = new Bitmap(filePath);
+                if (bitmap.Width != _drawer.orig_width || bitmap.Height != _drawer.orig_height) 
+                bitmap = new Bitmap(bitmap, _drawer.orig_width, _drawer.orig_height);
 
                 _drawer.resolution = (int)Resolution.Value;
                 _drawer.pb_map.resize(bitmap.Width / _drawer.resolution, bitmap.Height / _drawer.resolution);
@@ -311,8 +313,11 @@ namespace _life_
                 for(int i=0;i< _drawer.pb_map.cols;i++)
                 {
                     for(int j=0;j< _drawer.pb_map.rows;j++)
-                    {
-                        _drawer.pb_map.map[i, j] = res[i * _drawer.orig_height * _drawer.resolution + j * _drawer.resolution] == (byte)0 ? false : true;
+                    {  if (i * _drawer.orig_height * _drawer.resolution + j * _drawer.resolution < res.Length)
+                            _drawer.pb_map.map[i, j] = res[i * _drawer.orig_height * _drawer.resolution + j * _drawer.resolution] == (byte)0 ? false : true;
+                        else
+                            _drawer.pb_map.map[i, j] = false;
+
                     }
                 }
 
