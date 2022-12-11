@@ -89,7 +89,6 @@ namespace _life_
             Resolution.Value = resolution1;
             int cols = field.Width / resolution1;
             int rows = field.Height / resolution1;
-            textBox1.Text = $"{cols}, {rows}";
             my_map _map = new my_map(cols, rows, new bool[cols, rows], new int[cols, rows], getiinfo(to_alive), getiinfo(to_stay));
             _drawer = new drawer(field,_map,resolution1, new Bitmap(field.Width, field.Height));
             Properties.Settings.Default.Resolutionset = resolution1;
@@ -186,7 +185,6 @@ namespace _life_
             if (zoom_slider.Value != 0)
             {
                 zoom = zoom_slider.Value;
-                textBox1.Text = zoom_slider.Value.ToString();
                 _drawer.PictureBoxZoom(zoom);
             }
         }
@@ -291,7 +289,6 @@ namespace _life_
 
                 _drawer.resolution = (int)Resolution.Value;
                 _drawer.pb_map.resize(bitmap.Width / _drawer.resolution, bitmap.Height / _drawer.resolution);
-                textBox1.Text = $"{_drawer.pb_map.cols} {_drawer.pb_map.rows}";
                 for (int i = 0; i < _drawer.pb_map.cols; i++)
                 {
                     for (int j = 0; j < _drawer.pb_map.rows; j++)
